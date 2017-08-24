@@ -4,7 +4,9 @@ import {
   AUTH_USER,
   UNAUTH_USER,
   AUTH_ERROR,
-  FETCH_MESSAGE
+  FETCH_MESSAGE,
+  FETCH_PATIENTS,
+  SEARCH
 } from './types';
 
 //const ROOT_URL = 'http://localhost:3090';
@@ -20,7 +22,7 @@ export function signinUser({ email, password }) {
         // - Save the JWT token
         localStorage.setItem('token', response.data.token);
         // - redirect to the route '/feature'
-        browserHistory.push('/feature');
+        browserHistory.push('/patient');
       })
       .catch(() => {
         // If request is bad...
@@ -67,4 +69,22 @@ export function fetchMessage() {
         });
       });
   }
+}
+export function fetchPatients() {
+  return function(dispatch) {
+    axios.get(`${ROOT_URL}/patients`, {
+      headers: { 'X-Auth-Token': localStorage.getItem('token') }
+    })
+      .then(response => {
+        dispatch({
+          type: FETCH_PATIENTS,
+          payload: response.data
+        });
+      });
+  }
+}
+
+
+export function search(value) {
+  return {type: SEARCH, value};
 }
