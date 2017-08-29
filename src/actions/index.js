@@ -6,7 +6,8 @@ import {
   AUTH_ERROR,
   FETCH_MESSAGE,
   FETCH_PATIENTS,
-  SEARCH
+  SEARCH,
+  PATIENT_DETAILS
 } from './types';
 
 //const ROOT_URL = 'http://localhost:3090';
@@ -87,4 +88,13 @@ export function fetchPatients() {
 
 export function search(value) {
   return {type: SEARCH, value};
+}
+
+export function patientDetails(data){
+   return function(dispatch){
+      dispatch({
+        type:PATIENT_DETAILS,
+        payload:data
+    });
+    }
 }

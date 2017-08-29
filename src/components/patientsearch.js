@@ -1,8 +1,7 @@
 import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
-import _ from 'lodash';
-import SearchBar from './searchbar'
+import { browserHistory } from 'react-router';
 class PatientSearch extends Component{
     constructor(props) {
     super(props);
@@ -16,6 +15,7 @@ class PatientSearch extends Component{
   }
     componentWillMount() {
     this.props.fetchPatients();
+    
   }
   handleChange(e) {
      
@@ -29,6 +29,9 @@ class PatientSearch extends Component{
       
     this.setState({ filterbymedicalno: e.target.value });
   }
+  getComponent(object) {    
+    browserHistory.push('/models/'+object._id.$oid );
+}
   renderpost(){
       return  this.props.message
       .filter(patient=>{
@@ -36,7 +39,7 @@ class PatientSearch extends Component{
       })
       .map(patient=>{
             return(
-                <tr key={patient.id}>
+                <tr key={patient.id} onClick={this.getComponent.bind(this, patient)}>
                 <td>{patient.last_name}</td>
                 <td>{patient.first_name}</td>
                 <td> {patient.features.age.value}</td>
@@ -52,8 +55,24 @@ class PatientSearch extends Component{
         if(!this.props.message){
             return (
                 <div><h3> PatientSearch</h3>
-               
-            <table className="table">
+                <form className="form-group">
+                     <input 
+                        type="text" className="form-control"
+                        value={this.state.filterbyfirstname} 
+                        onChange={ this.handleChange.bind(this) } 
+                        placeholder="filterbyfirstname" />
+                        <input 
+                        type="text" className="form-control"
+                        value={this.state.filterbylastname} 
+                        onChange={ this.handleChange1.bind(this) } 
+                        placeholder="filterbylastname" />
+                        <input 
+                        type="text" className="form-control"
+                        value={this.state.filterbymedicalno} 
+                        onChange={ this.handleChange2.bind(this) } 
+                        placeholder="filterbymedical"/>
+                </form>
+            <table className="table table-hover">
             <thead className="thead-inverse">
                 <tr>
                 <th>Last Name</th>
@@ -91,7 +110,7 @@ class PatientSearch extends Component{
                         placeholder="filterbymedical"/>
                 </form>
                 <h3> PatientSearch</h3>
-            <table className="table">
+            <table className="table table-hover">
             <thead className="thead-inverse">
                 <tr>
                 <th>Last Name</th>
@@ -114,6 +133,7 @@ class PatientSearch extends Component{
 }
 
 function mapStateToProps(state) {
+   
   return { message: state.auth.message };
 }
 

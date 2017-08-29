@@ -4,7 +4,7 @@ import {
   AUTH_ERROR,
   FETCH_MESSAGE,
   FETCH_PATIENTS,
-  
+  PATIENT_DETAILS
 } from '../actions/types';
 
 export default function(state = {}, action) {
@@ -19,9 +19,10 @@ export default function(state = {}, action) {
     
       return { ...state, message: action.payload };
      case FETCH_PATIENTS:
-     console.log(action);
       return { ...state, message: action.payload };
-    
+      case PATIENT_DETAILS:
+      console.log(action)
+    return { ...state, selectedpatient: action.payload };
   }
 
   return state;
